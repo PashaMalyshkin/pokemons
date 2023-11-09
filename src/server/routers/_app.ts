@@ -9,7 +9,7 @@ export const appRouter = router({
       const api = new PokemonClient();
       const pokemon = await api.getPokemonById(input.id);
 
-      return { name: pokemon.name, sprites: pokemon.sprites };
+      return pokemon
     }),
 });
 
