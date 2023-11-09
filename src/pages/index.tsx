@@ -10,12 +10,24 @@ export default function Home() {
 
   const firstPokemon = trpc.getPokemonById.useQuery({ id: firstPokemonID });
   const secondPokemon = trpc.getPokemonById.useQuery({ id: secondPokemonID });
-
+  const { mutate: voteForPokemon } = trpc.castVote.useMutation();
   if (firstPokemon.isLoading || secondPokemon.isLoading) {
-    return null;
+    return null; 
   }
 
   const voteForRoundest = (selected: number) => {
+    if (selected === firstPokemonID) {
+      voteForPokemon({
+        votedFor: firstPokemonID,
+        votedAgainst: secondPokemonID,
+      });
+    } else {
+      voteForPokemon({
+        votedFor: secondPokemonID,
+        votedAgainst: firstPokemonID,
+      });
+    }
+
     setIds(getOptionsForVote());
   };
 
@@ -59,6 +71,7 @@ const PokemonListing: React.FC<{
         width="256"
         height="256"
         alt="first pokemon"
+        layout="fixed"
       />
       <div className="text-xl text-center capitalize mt-[-2rem]">
         {pokemon.name}
