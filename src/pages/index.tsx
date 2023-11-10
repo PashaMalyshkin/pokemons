@@ -2,7 +2,6 @@ import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 import Image from "next/image";
-import { Pokemon } from "pokenode-ts";
 
 export default function Home() {
   const [ids, setIds] = useState(() => getOptionsForVote());
