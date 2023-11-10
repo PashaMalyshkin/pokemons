@@ -1,16 +1,16 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-import { PokemonClient } from "pokenode-ts";
 import { prisma } from "../utils/prisma";
 
 export const appRouter = router({
   getPokemonById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
-      const api = new PokemonClient();
-      const pokemon = await api.getPokemonById(input.id);
+      const pokemon = await prisma.pokemon.findFirst({ where: { id: input.id } })
 
-      return pokemon; 
+      if (!pokemon) throw new Error("doesn't exist");
+
+      return pokemon;
     }),
   castVote: publicProcedure
     .input(
@@ -22,8 +22,8 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       const voteInDb = await prisma.vote.create({
         data: {
-          votedFor: input.votedFor,
-          votedAgainst: input.votedAgainst,
+          votedForId: input.votedFor,
+          votedAgainstId: input.votedAgainst,
         },
       });
 

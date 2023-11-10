@@ -1,6 +1,6 @@
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { trpc } from "@/utils/trpc";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Pokemon } from "pokenode-ts";
 
@@ -12,7 +12,7 @@ export default function Home() {
   const secondPokemon = trpc.getPokemonById.useQuery({ id: secondPokemonID });
   const { mutate: voteForPokemon } = trpc.castVote.useMutation();
   if (firstPokemon.isLoading || secondPokemon.isLoading) {
-    return null; 
+    return null;
   }
 
   const voteForRoundest = (selected: number) => {
@@ -61,13 +61,13 @@ export default function Home() {
 }
 
 const PokemonListing: React.FC<{
-  pokemon: Pokemon;
+  pokemon: { name: string, spriteUrl: string };
   voteForRoundest: () => void;
 }> = ({ pokemon, voteForRoundest }) => {
   return (
     <div className="flex flex-col" suppressHydrationWarning>
       <Image
-        src={pokemon.sprites.front_default || ""}
+        src={pokemon.spriteUrl || ""}
         width="256"
         height="256"
         alt="first pokemon"
