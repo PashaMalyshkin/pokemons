@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply bg-indigo-500
+}
+
+html {
+    color: #fff;
+}
